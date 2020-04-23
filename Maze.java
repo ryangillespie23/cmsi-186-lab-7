@@ -17,18 +17,12 @@ public class Maze {
     private Location initialCheeseLocation;
 
     /**
-     * Builds and return sa new maze given a description in the form of an array
-     * of strings, one for each row of the maze, with each string containing 0's
-     * and 1's -- 0's for open spaces and 1's for walls. For example:
+     * Builds and returns a new maze given a description in the form of an array
+     * of strings, one for each row of the maze, with each string containing o's
+     * and w's and r's and c's. o=Open space, w=Wall, r=Rat, c=Cheese.
      *
-     * <pre>
-     * 1100
-     * 0100
-     * 1001
-     * </pre>
-     *
-     * The maze must be rectangular and contain nothing but 0's and 1's, otherwise
-     * an IllegalArgumentException will be thrown.
+     * The maze must be rectangular and contain nothing but legal characters. There
+     * must be exactly one 'r' and exactly one 'c'.
      *
      * The constructor is private to force users to only construct mazes through one
      * of the factory methods fromString, fromFile, or fromScanner.
