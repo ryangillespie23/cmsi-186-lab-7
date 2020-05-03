@@ -4,12 +4,13 @@ import java.util.Objects;
 import java.util.function.Consumer;
 
 public abstract class TestSuite {
-    int totalTests = 0;
+    int successes = 0;
     int failures = 0;
     int errors = 0;
 
     private static String red(String s) { return "\u001B[31m" + s + "\u001B[0m"; }
     private static String green(String s) { return "\u001B[32m" + s + "\u001B[0m"; }
+    private static String error(String s) { return "\u001B[31m\u001B[1m" + s + "\u001B[0m"; }
 
     static class Test {
         String name;
@@ -21,6 +22,7 @@ public abstract class TestSuite {
 
     void expect(boolean condition, String message) {
         if (condition) {
+            successes++;
             System.out.print(green(" [PASS]"));
         } else {
             failures++;
@@ -82,25 +84,24 @@ public abstract class TestSuite {
     }
 
     public static void run(TestSuite suite) {
-        suite.totalTests = 0;
+        suite.successes = 0;
         suite.failures = 0;
         suite.errors = 0;
         for (var test: suite.getTests()) {
-            suite.totalTests += 1;
             System.out.println();
             System.out.print("• " + test.name);
             try {
                 test.code.run();
             } catch (Exception e) {
                 suite.errors++;
-                System.err.print(red(" \u2620 " + e.getMessage()));
+                System.err.print(" " + error("[ERROR] " + e.getMessage()));
             }
         }
-        System.out.printf("%n%s%n", "-".repeat(80));
-        var successes = suite.totalTests - suite.failures - suite.errors;
-        System.out.printf("Total  : %d%n", suite.totalTests);
-        if (successes > 0) System.out.printf(green("Passed : %d%n"), successes);
-        if (suite.failures > 0) System.out.printf(red("Failed : %d%n"), suite.failures);
-        if (suite.errors > 0) System.out.printf(red("Errors : %d%n"), suite.errors);
+        System.out.println();
+        System.out.println("-".repeat(80));
+        System.out.println("Total  : " + (suite.successes + suite.failures + suite.errors));
+        if (suite.successes > 0) System.out.println(green("Passed : " + suite.successes));
+        if (suite.failures > 0) System.out.println(red("Failed : " + suite.failures));
+        if (suite.errors > 0) System.out.println(error("Errors : " + suite.errors));
     }
 }
