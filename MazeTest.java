@@ -25,10 +25,6 @@ public class MazeTest extends TestSuite {
                 () -> Maze.fromString("row\noww"),
                 IllegalArgumentException.class, "Maze has no cheese"
             )),
-            new Test("Empty maze can be detected", () -> expectThrows(
-                () -> Maze.fromFile("testmaze-empty"),
-                IllegalArgumentException.class, "Maze has no rows"
-            )),
             new Test("Location contents", () -> {
                 var maze = Maze.fromString("wwor\ncooo");
                 expectEqual(maze.new Location(0, 2).contents(), Maze.Cell.OPEN);
@@ -82,7 +78,7 @@ public class MazeTest extends TestSuite {
                 expectEqual(maze.getHeight(), 2);
                 expectEqual(maze.getInitialRatPosition().isAt(maze.new Location(0, 3)), true);
                 expectEqual(maze.getInitialCheesePosition().isAt(maze.new Location(1, 0)), true);
-                expectEqual(maze.toString(), "██ r███ █\nc     ███");
+                expectEqual(maze.toString(), "\u2588\u2588 r\u2588\u2588\u2588 \u2588\nc     \u2588\u2588\u2588");
             }),
             new Test("Backtracking Solver throws if listener is null", () -> expectThrows(
                 () -> {
@@ -110,4 +106,3 @@ public class MazeTest extends TestSuite {
         };
     }
 }
-
